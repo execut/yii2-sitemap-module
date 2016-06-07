@@ -173,6 +173,24 @@ class Sitemap extends \yii\base\Component
             return $item;
         }, $urls);
 
+        usort($urls, function ($urlA, $urlB) {
+            if (!isset($urlA['priority'])) {
+                return 1;
+            }
+
+            if (!isset($urlB['priority'])) {
+                return -1;
+            }
+
+            $a = $urlA['priority'];
+            $b = $urlB['priority'];
+            if ($a == $b) {
+                return 0;
+            }
+
+            return ($a < $b) ? 1 : -1;
+        });
+
         return $urls;
     }
 
