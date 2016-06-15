@@ -27,7 +27,7 @@ use yii\helpers\Url;
  * @author HimikLab
  * @package assayerpro\sitemap
  */
-class Sitemap extends \yii\base\Component
+class Generator extends \yii\base\Component
 {
     const ALWAYS = 'always';
     const HOURLY = 'hourly';
@@ -59,6 +59,9 @@ class Sitemap extends \yii\base\Component
 
     /** @var int */
     public $maxSectionUrl = 20000;
+
+    public $sortByPriority = true;
+
     /**
      * Build site map.
      * @return array
@@ -79,14 +82,12 @@ class Sitemap extends \yii\base\Component
             $xml->writeAttribute('xmlns', $this->schemas['xmlns']);
             for ($i = 1; $i <= $parts; $i++) {
                 $xml->startElement('sitemap');
-                $xml->writeElement('loc', Url::to(['/sitemap/default/index', 'id' =>$i], true));
+                $xml->writeElement('loc', Url::to([$route, 'id' =>$i], true));
                 $xml->writeElement('lastmod', static::dateToW3C(time()));
                 $xml->endElement();
-                $result[$i]['file'] = Url::to(['/sitemap/default/index', 'id' =>$i], false);
             }
             $xml->endElement();
             $result[0]['xml'] = $xml->outputMemory();
-            $result[0]['file'] = Url::to(['/sitemap/default/index']);
         }
         $urlItem = 0;
         for ($i = 1; $i <= $parts; $i++) {
@@ -162,7 +163,7 @@ class Sitemap extends \yii\base\Component
         $urls = array_map(function($item) {
             $item['loc'] = Url::to($item['loc'], true);
             if (isset($item['lastmod'])) {
-                $item['lastmod'] = Sitemap::dateToW3C($item['lastmod']);
+                $item['lastmod'] = Generator::dateToW3C($item['lastmod']);
             }
             if (isset($item['images'])) {
                 $item['images'] = array_map(function($image) {
@@ -173,23 +174,9 @@ class Sitemap extends \yii\base\Component
             return $item;
         }, $urls);
 
-        usort($urls, function ($urlA, $urlB) {
-            if (!isset($urlA['priority'])) {
-                return 1;
-            }
-
-            if (!isset($urlB['priority'])) {
-                return -1;
-            }
-
-            $a = $urlA['priority'];
-            $b = $urlB['priority'];
-            if ($a == $b) {
-                return 0;
-            }
-
-            return ($a < $b) ? 1 : -1;
-        });
+        if ($this->sortByPriority) {
+            $this->sortUrlsByPriority($urls);
+        }
 
         return $urls;
     }
@@ -232,5 +219,29 @@ class Sitemap extends \yii\base\Component
         } else {
             return date(DATE_W3C, strtotime($date));
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function sortUrlsByPriority(&$urls)
+    {
+        usort($urls, function ($urlA, $urlB) {
+            if (!isset($urlA['priority'])) {
+                return 1;
+            }
+
+            if (!isset($urlB['priority'])) {
+                return -1;
+            }
+
+            $a = $urlA['priority'];
+            $b = $urlB['priority'];
+            if ($a == $b) {
+                return 0;
+            }
+
+            return ($a < $b) ? 1 : -1;
+        });
     }
 }

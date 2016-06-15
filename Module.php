@@ -19,6 +19,13 @@ namespace assayerpro\sitemap;
  */
 class Module extends \yii\base\Module
 {
+    public $cacheExpire = 0;
+    public $enableGzip = false;
+    protected $_components = [
+        'generator' => [
+            'class' => \assayerpro\sitemap\Sitemap::class,
+        ],
+    ];
     /**
      * The namespace that controller classes are in.
      *
