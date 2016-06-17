@@ -40,6 +40,7 @@ class Module extends \yii\base\Module
     public function init()
     {
         parent::init();
+        $this->generator->moduleId = $this->id;
 
         // custom initialization code goes here
     }
