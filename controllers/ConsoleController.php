@@ -47,8 +47,9 @@ class ConsoleController extends Controller
     public function actionIndex()
     {
         $route = '/' . $this->module->id . '/web/index';
-        $rootDir = trim($this->rootDir, '/');
-        $file = Yii::getAlias($rootDir) . Url::to([$route], false);
+
+        $rootDir = Yii::getAlias(trim($this->rootDir, '/'));
+        $file = $rootDir . Url::to([$route], false);
 
         $this->stdout("Generate sitemap file.\n", Console::FG_GREEN);
         $this->stdout("Rendering sitemap...\n", Console::FG_GREEN);
@@ -60,7 +61,7 @@ class ConsoleController extends Controller
         $sitemap_count = count($sitemap);
 
         for ($i = 0; $i < $sitemap_count - 1; $i++) {
-            $file = Yii::getAlias($rootDir) . Url::to([$route, 'id' => $i], false);
+            $file = $rootDir . Url::to([$route, 'id' => $i], false);
             $this->stdout("Writing sitemap to $file\n", Console::FG_GREEN);
             file_put_contents($file, $sitemap[$i + 1]['xml']);
         }

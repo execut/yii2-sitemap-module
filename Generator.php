@@ -84,7 +84,7 @@ class Generator extends \yii\base\Component
             $xml->writeAttribute('xmlns', $this->schemas['xmlns']);
             for ($i = 1; $i <= $parts; $i++) {
                 $xml->startElement('sitemap');
-                $xml->writeElement('loc', Url::to([$this->moduleId . '/web/index', 'id' =>$i], true));
+                $xml->writeElement('loc', Url::to(['/' . $this->moduleId . '/web/index', 'id' =>$i], true));
                 $xml->writeElement('lastmod', static::dateToW3C(time()));
                 $xml->endElement();
             }
