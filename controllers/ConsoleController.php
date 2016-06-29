@@ -48,7 +48,7 @@ class ConsoleController extends Controller
     {
         $route = '/' . $this->module->id . '/web/index';
 
-        $rootDir = Yii::getAlias(trim($this->rootDir, '/'));
+        $rootDir = Yii::getAlias('/' . trim($this->rootDir, '/'));
         $file = $rootDir . Url::to([$route], false);
 
         $this->stdout("Generate sitemap file.\n", Console::FG_GREEN);
