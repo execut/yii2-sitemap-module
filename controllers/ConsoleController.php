@@ -67,10 +67,10 @@ class ConsoleController extends Controller
         file_put_contents($file, $sitemap[0]['xml']);
         $sitemapCount = count($sitemap);
 
-        for ($i = 0; $i < $sitemapCount; $i++) {
+        for ($i = 1; $i < $sitemapCount; $i++) {
             $file = $rootDir . Url::to([$route, 'id' => $i], false);
             $this->stdout("Writing sitemap to $file\n", Console::FG_GREEN);
-            file_put_contents($file, $sitemap[$i + 1]['xml']);
+            file_put_contents($file, $sitemap[$i]['xml']);
         }
         $this->stdout("Done\n", Console::FG_GREEN);
         return self::EXIT_CODE_NORMAL;
