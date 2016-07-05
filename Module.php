@@ -11,11 +11,19 @@
 
 namespace assayerpro\sitemap;
 
+use \assayerpro\sitemap\Generator;
+
 /**
  * Class Module for sitemap
  *
  * @author Serge Larin <serge.larin@gmail.com>
  * @package app\modules\webmaster
+ */
+
+/**
+ * Class Module
+ * @package assayerpro\sitemap
+ * @property Generator $generator
  */
 class Module extends \yii\base\Module
 {
@@ -23,7 +31,7 @@ class Module extends \yii\base\Module
     public $enableGzip = false;
     protected $_components = [
         'generator' => [
-            'class' => \assayerpro\sitemap\Sitemap::class,
+            'class' => Generator::class,
         ],
     ];
     /**

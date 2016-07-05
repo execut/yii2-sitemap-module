@@ -10,6 +10,7 @@
 
 namespace assayerpro\sitemap\controllers;
 
+use assayerpro\sitemap\Module;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
@@ -22,9 +23,15 @@ use yii\helpers\Url;
  * @author Serge Larin <serge.larin@gmail.com>
  * @package assayerpro\sitemap
  */
+
+/**
+ * Class ConsoleController
+ *
+ * @package assayerpro\sitemap\controllers
+ * @property Module $module
+ */
 class ConsoleController extends Controller
 {
-
     /**
      * @var string folder for sitemaps files
      */
@@ -58,9 +65,9 @@ class ConsoleController extends Controller
 
         $this->stdout("Writing sitemap to $file\n", Console::FG_GREEN);
         file_put_contents($file, $sitemap[0]['xml']);
-        $sitemap_count = count($sitemap);
+        $sitemapCount = count($sitemap);
 
-        for ($i = 0; $i < $sitemap_count - 1; $i++) {
+        for ($i = 0; $i < $sitemapCount; $i++) {
             $file = $rootDir . Url::to([$route, 'id' => $i], false);
             $this->stdout("Writing sitemap to $file\n", Console::FG_GREEN);
             file_put_contents($file, $sitemap[$i + 1]['xml']);
