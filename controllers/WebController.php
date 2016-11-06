@@ -55,13 +55,16 @@ class WebController extends Controller
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
 
-        Yii::$app->response->format = Response::FORMAT_XML;
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_XML;
         $result = $sitemap[$id]['xml'];
         if ($this->module->enableGzip) {
             $result = gzencode($result);
+            $headers = $response->headers;
             $headers->add('Content-Encoding', 'gzip');
             $headers->add('Content-Length', strlen($result));
         }
-        return $result;
+
+        echo $result;
     }
 }
