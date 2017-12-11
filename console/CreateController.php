@@ -10,6 +10,7 @@
 
 namespace assayerpro\sitemap\console;
 
+use assayerpro\sitemap\Sitemap;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
@@ -57,7 +58,11 @@ class CreateController extends Controller
         $file = Yii::getAlias($this->rootDir.'/'.$this->sitemapFile);
         $this->stdout("Generate sitemap file.\n", Console::FG_GREEN);
         $this->stdout("Rendering sitemap...\n", Console::FG_GREEN);
-        $sitemap = Yii::$app->sitemap->render();
+        /**
+         * @var Sitemap $component
+         */
+        $component = $this->module->getComponent();
+        $sitemap = $component->render();
 
         $this->stdout("Writing sitemap to $file\n", Console::FG_GREEN);
         file_put_contents($file, $sitemap[0]['xml']);
