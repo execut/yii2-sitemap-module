@@ -67,7 +67,7 @@ class Sitemap extends \yii\base\Component
     public $maxSectionUrl = 20000;
 
     /** @var string Owner module id */
-    public $moduleId = 'sitemap';
+    public $module = null;
 
     /** @var bool Sort urls by priority. Top priority urls first */
     public $sortByPriority = false;
@@ -93,16 +93,17 @@ class Sitemap extends \yii\base\Component
             $xml->startDocument('1.0', 'UTF-8');
             $xml->startElement('sitemapindex');
             $xml->writeAttribute('xmlns', $this->schemas['xmlns']);
+            $defaultRoute = '/'.$this->module->id.'/'.$this->module->defaultRoute.'/index';
             for ($i = 1; $i <= $parts; $i++) {
                 $xml->startElement('sitemap');
-                $xml->writeElement('loc', Url::to(['/' . $this->moduleId . '/default/index', 'id' =>$i], true));
+                $xml->writeElement('loc', Url::to([$defaultRoute, 'id' =>$i], true));
                 $xml->writeElement('lastmod', static::dateToW3C(time()));
                 $xml->endElement();
-                $result[$i]['file'] = Url::to(['/' . $this->moduleId . '/default/index', 'id' =>$i], false);
+                $result[$i]['file'] = Url::to([$defaultRoute, 'id' =>$i], false);
             }
             $xml->endElement();
             $result[0]['xml'] = $xml->outputMemory();
-            $result[0]['file'] = Url::to(['/' . $this->moduleId . '/default/index']);
+            $result[0]['file'] = Url::to([$defaultRoute]);
         }
         $urlItem = 0;
         for ($i = 1; $i <= $parts; $i++) {
