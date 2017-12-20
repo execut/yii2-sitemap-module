@@ -24,7 +24,7 @@ class ModuleTest extends \Codeception\TestCase\Test
         $module = new Module('sitemap');
         \yii::$app->set('sitemap', $appComponent);
 
-        $component = $module->getComponent();
+        $component = $module->sitemap;
         $this->assertEquals($component, $appComponent);
         \yii::$app->set('sitemap', null);
     }
@@ -32,20 +32,18 @@ class ModuleTest extends \Codeception\TestCase\Test
     public function testGetComponentFromModule() {
         $moduleComponent = new Sitemap();
         $module = new Module('sitemap', null, [
-            'components' => [
-                'sitemap' => $moduleComponent,
-            ],
+            'sitemap' => $moduleComponent,
         ]);
 
-        $component = $module->getComponent();
+        $component = $module->sitemap;
         $this->assertEquals($component, $moduleComponent);
-        $this->assertEquals('sitemap', $component->moduleId);
+        $this->assertEquals('sitemap', $component->module->id);
     }
 
     public function testNoComponentException() {
         $module = new Module('sitemap');
         $this->setExpectedException(Exception::class,
             'Component for sitemap module is required. Define it via application components or module components');
-        $module->getComponent();
+        $module->sitemap;
     }
 }

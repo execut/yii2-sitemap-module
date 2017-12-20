@@ -37,7 +37,7 @@ class DefaultController extends Controller
             'pageCache' => [
                 'class' => 'yii\filters\PageCache',
                 'only' => ['index', 'robots-txt'],
-                'duration' => $this->module->getComponent()->cacheExpire,
+                'duration' => $this->module->sitemap->cacheExpire,
                 'variations' => [Yii::$app->request->get('id')],
             ],
         ];
@@ -54,8 +54,7 @@ class DefaultController extends Controller
         /**
          * @var Sitemap $component
          */
-        $component = $this->module->getComponent();
-        $sitemap = $component->render();
+        $sitemap = $this->module->sitemap->render();
         if (empty($sitemap[$id])) {
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
@@ -64,7 +63,7 @@ class DefaultController extends Controller
         $headers = Yii::$app->response->headers;
         $headers->add('Content-Type', 'application/xml');
         $result = $sitemap[$id]['xml'];
-        if ($this->module->getComponent()->enableGzip) {
+        if ($this->module->sitemap->enableGzip) {
             $result = gzencode($result);
             $headers->add('Content-Encoding', 'gzip');
             $headers->add('Content-Length', strlen($result));

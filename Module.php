@@ -26,6 +26,14 @@ class Module extends \yii\base\Module
             'class' => 'assayerpro\sitemap\console\CreateController',
         ],
     ];
+
+    /**
+     * sitemap
+     *
+     * @var mixed
+     * @access private
+     */
+    private $_sitemap = null;
     /**
      * The namespace that controller classes are in.
      *
@@ -42,16 +50,35 @@ class Module extends \yii\base\Module
         }
     }
 
-    public function getComponent() {
+
+    /**
+     * setSitemap
+     *
+     * @param mixed $sitemap
+     * @access public
+     * @return void
+     */
+    public function setSitemap($sitemap) {
+        $this->_sitemap = $sitemap;
+
+    }
+
+    /**
+     * getSitemap
+     *
+     * @access public
+     * @return void
+     */
+    public function getSitemap() {
         if (!empty(\yii::$app->components['sitemap'])) {
-            $component = \yii::$app->components['sitemap'];
-        } else if (!($component = $this->get('sitemap', false))) {
+            $result = \yii::$app->components['sitemap'];
+        } else if (!($result = $this->_sitemap)) {
             throw new Exception('Component for sitemap module is required. Define it via application components '
                 . 'or module components');
         }
 
-        $component->moduleId = $this->uniqueId;
+        $result->module = $this;
 
-        return $component;
+        return $result;
     }
 }

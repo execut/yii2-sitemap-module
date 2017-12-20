@@ -61,8 +61,7 @@ class CreateController extends Controller
         /**
          * @var Sitemap $component
          */
-        $component = $this->module->getComponent();
-        $sitemap = $component->render();
+        $sitemap = $this->module->sitemap->render();
 
         $this->stdout("Writing sitemap to $file\n", Console::FG_GREEN);
         file_put_contents($file, $sitemap[0]['xml']);
