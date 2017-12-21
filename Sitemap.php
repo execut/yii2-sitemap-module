@@ -36,7 +36,7 @@ class Sitemap extends \yii\base\Component
     const MONTHLY = 'monthly';
     const YEARLY = 'yearly';
     const NEVER = 'never';
-    private $schemas = [
+    private $_schemas = [
         'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9',
         'xmlns:image' => 'http://www.google.com/schemas/sitemap-image/1.1',
         'xmlns:news' => 'http://www.google.com/schemas/sitemap-news/0.9',
@@ -92,7 +92,7 @@ class Sitemap extends \yii\base\Component
             $xml->openMemory();
             $xml->startDocument('1.0', 'UTF-8');
             $xml->startElement('sitemapindex');
-            $xml->writeAttribute('xmlns', $this->schemas['xmlns']);
+            $xml->writeAttribute('xmlns', $this->_schemas['xmlns']);
             $defaultRoute = '/'.$this->module->id.'/'.$this->module->defaultRoute.'/index';
             for ($i = 1; $i <= $parts; $i++) {
                 $xml->startElement('sitemap');
@@ -111,7 +111,7 @@ class Sitemap extends \yii\base\Component
             $xml->openMemory();
             $xml->startDocument('1.0', 'UTF-8');
             $xml->startElement('urlset');
-            foreach ($this->schemas as $attr => $schemaUrl) {
+            foreach ($this->_schemas as $attr => $schemaUrl) {
                 $xml->writeAttribute($attr, $schemaUrl);
             }
             for (; ($urlItem < $i * $this->maxSectionUrl) && ($urlItem < count($this->renderedUrls)); $urlItem++) {
