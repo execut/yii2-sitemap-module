@@ -176,13 +176,13 @@ class Sitemap extends \yii\base\Component
             }
             $this->renderedUrls = array_merge($this->renderedUrls, $model->generateSiteMap());
         }
-        $this->renderedUrls = array_map(function($item) {
+        $this->renderedUrls = array_map(function ($item) {
             $item['loc'] = Url::to($item['loc'], true);
             if (isset($item['lastmod'])) {
                 $item['lastmod'] = Sitemap::dateToW3C($item['lastmod']);
             }
             if (isset($item['images'])) {
-                $item['images'] = array_map(function($image) {
+                $item['images'] = array_map(function ($image) {
                     $image['loc'] = Url::to($image['loc'], true);
                     return $image;
                 }, $item['images']);
