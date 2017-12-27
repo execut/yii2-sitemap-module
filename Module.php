@@ -18,6 +18,7 @@ use yii\console\Application;
  *
  * @author Serge Larin <serge.larin@gmail.com>
  * @package app\modules\webmaster
+ * @property Sitemap $sitemap
  */
 class Module extends \yii\base\Module
 {
@@ -67,7 +68,7 @@ class Module extends \yii\base\Module
      * getSitemap
      *
      * @access public
-     * @return void
+     * @return Sitemap
      */
     public function getSitemap() {
         if (!empty(\yii::$app->components['sitemap'])) {
