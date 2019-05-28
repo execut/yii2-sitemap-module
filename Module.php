@@ -72,7 +72,7 @@ class Module extends \yii\base\Module
      */
     public function getSitemap() {
         if (!empty(\yii::$app->components['sitemap'])) {
-            $result = \yii::$app->components['sitemap'];
+            $result = \yii::$app->get('sitemap');
         } else if (!($result = $this->_sitemap)) {
             throw new Exception('Component for sitemap module is required. Define it via application components '
                 . 'or module components');
